@@ -14,7 +14,7 @@
                     "type": "button",
                     "value": "chess"
                 },
-                {
+                {   
                     "name": "maze",
                     "text": "Falken's Maze",
                     "type": "button",

@@ -1,9 +1,14 @@
+'use strict';
+
+var bodyParser = require("body-parser");
 var express = require('express');
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
@@ -13,11 +18,14 @@ app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
+// Handler for Slack button click 
+app.post('/button', function(req, res) {
+  res.status(200).send('Done');
+});
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-
-'use strict';
 
 var Pmbot = require('./lib/pmbot');
 
