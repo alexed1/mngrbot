@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
+  "name": "mngrbot",
   "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "description": "A slack app using Express 4",
   "engines": {
     "node": "5.9.1"
   },
