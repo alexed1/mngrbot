@@ -45,7 +45,7 @@ app.get('/authorized', function(request, response) {
   var code = request.query.code; // auth code
   if (!code) 
   {
-    response.status(400).send('Authorization failed')
+    response.status(400).send('Authorization failed');
     return;
   }
   var params = {};
@@ -60,9 +60,12 @@ app.get('/authorized', function(request, response) {
       var botAccessToken = body.bot["bot_access_token"];
       var userId = body["user_id"];
       var teamId = body["team_id"];
+          response.status(200).send('Authorization succeeded!');
+          return;
     },
     function(status){
       console.log('Error has occurred:' + status.error);
+      response.status(400).send('Authorization failed: '  + status.error);
     });
 });
 
