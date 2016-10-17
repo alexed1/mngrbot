@@ -92,7 +92,7 @@ app.post('/button', function(request, response) {
       msgResponse = {};
       msgResponse.text = msg;
 
-  response.status(200).send(JSON.stringify(msgResponse));
+  response.status(200).send(msgResponse);
 });
 
 app.listen(app.get('port'), function() {
