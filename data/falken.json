@@ -9,20 +9,20 @@
             "name": "chess",
             "text": "Chess",
             "type": "button",
-            "value": "chess"
+            "value": "Chess"
         },
         {   
             "name": "maze",
             "text": "Falken's Maze",
             "type": "button",
-            "value": "maze"
+            "value": "Maze"
         },
         {
             "name": "war",
             "text": "Thermonuclear War",
             "style": "danger",
             "type": "button",
-            "value": "war",
+            "value": "War",
             "confirm": {
                 "title": "Are you sure?",
                 "text": "Wouldn't you prefer a good game of chess?",

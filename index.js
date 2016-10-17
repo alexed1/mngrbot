@@ -60,8 +60,8 @@ app.get('/authorized', function(request, response) {
       var botAccessToken = body.bot["bot_access_token"];
       var userId = body["user_id"];
       var teamId = body["team_id"];
-          response.status(200).send('Authorization succeeded! Bot access token: ' + botAccessToken);
-          return;
+        Pmbot.saveOAuthToken(botAccessToken, teamId);
+        response.status(200).send('Authorization succeeded!');
     },
     function(status){
       console.log('Error has occurred:' + status.error);
@@ -70,8 +70,29 @@ app.get('/authorized', function(request, response) {
 });
 
 // Handler for message button clicks 
-app.post('/button', function(req, res) {
-  res.status(200).send('Done');
+app.post('/button', function(request, response) {
+  var payloadStr = request.body.payload;
+  if (payloadStr == null)
+  {
+      console.error("/button: No payload is found in the request body.");
+      res.status(400).send();
+      return;
+  }
+  var payload = JSON.parse(payloadStr),
+      channel = payload.channel.name;
+  
+  if (!payload.actions || payload.actions.constructor !== Array || payload.actions.length === 0)
+  {
+      console.error("/button: The payload did not contain any actions.");
+      res.status(400).send();
+      return;  
+  }
+  var buttonClicked = payload.actions[0].value,
+      msg = 'You clicked ' + buttonClicked,
+      msgResponse = {};
+      msgResponse.text = msg;
+
+  response.status(200).send(JSON.stringify(msgResponse));
 });
 
 app.listen(app.get('port'), function() {
