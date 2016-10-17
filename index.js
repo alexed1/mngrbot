@@ -60,7 +60,7 @@ app.get('/authorized', function(request, response) {
       var botAccessToken = body.bot["bot_access_token"];
       var userId = body["user_id"];
       var teamId = body["team_id"];
-          response.status(200).send('Authorization succeeded!');
+          response.status(200).send('Authorization succeeded! Bot access token: ' + botAccessToken);
           return;
     },
     function(status){
