@@ -56,12 +56,13 @@ app.get('/authorized', function(request, response) {
   Pmbot.api('oauth.access', params)
   .then(
     function(body) {
-      var accessToken = body["access_token"];
-      var botAccessToken = body.bot["bot_access_token"];
+      var accessToken = body["access_token"]; // this one is not useful for us at all 
+      var botAccessToken = body.bot["bot_access_token"]; // this token should be used to connect to Slack API
       var userId = body["user_id"];
       var teamId = body["team_id"];
-        Pmbot.saveOAuthToken(botAccessToken, teamId);
-        response.status(200).send('Authorization succeeded!');
+      console.log('The new bot token is: ' + botAccessToken);
+      Pmbot.saveOAuthToken(botAccessToken, teamId);
+      response.status(200).send('Authorization succeeded!');
     },
     function(status){
       console.log('Error has occurred:' + status.error);
@@ -88,7 +89,7 @@ app.post('/button', function(request, response) {
       return;  
   }
   var buttonClicked = payload.actions[0].value,
-      msg = '*You clicked ' + buttonClicked + '. Thank you!*',
+      msg = '*You clicked   ' + buttonClicked + '. Thank you!*',
       msgResponse = {};
       msgResponse.text = msg;
       msgResponse.attachments 
