@@ -3,9 +3,10 @@
 var bodyParser = require("body-parser");
 var express = require('express');
 var request = require('request');
-var Pmbot = require('./lib/pmbot');
 var app = express();
 
+//==================================================
+//SECTION basic http support
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
@@ -16,12 +17,28 @@ app.use(bodyParser.json());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+app.get('/', function(request, response) {
+  response.render('pages/index');
+});
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
+
+//============================================================
+//SECTION Slack integration
+
+// Handler for Slack button click
+app.post('/button', function(req, res) {
+  res.status(200).send('Done');
+});
+
+var Pmbot = require('./lib/pmbot');
+
 var token = process.env.BOT_API_KEY;
 var dbPath = process.env.BOT_DB_PATH;
 var name = process.env.BOT_NAME;
 var initChannel = process.env.INIT_CHANNEL;
-var slackClientId = process.env.SLACK_CLIENT_ID;
-var slackClientSecret = process.env.SLACK_CLIENT_SECRET;
 
 var Pmbot = new Pmbot({
   token: token,
@@ -32,80 +49,43 @@ var Pmbot = new Pmbot({
 
 Pmbot.run();
 
-//
-// ExpressJS routes
-//
-app.get('/', function(request, response) {
-  response.render('pages/index');
-});
+//=========================================================
+//SECTION FB MEssenger integration
 
-// This route is called by Slack after the OAuth authorization is successfully completed
-// Here we acquire the OAuth token and save it somewhere
-app.get('/authorized', function(request, response) {
-  var code = request.query.code; // auth code
-  if (!code)
-  {
-    response.status(400).send('Authorization failed');
-    return;
-  }
-  var params = {};
-  params['client_id'] = slackClientId;
-  params['client_secret'] = slackClientSecret;
-  params['code'] = code;
 
-  Pmbot.api('oauth.access', params)
-  .then(
-    function(body) {
-      var accessToken = body["access_token"]; // this one is not useful for us at all 
-      var botAccessToken = body.bot["bot_access_token"]; // this token should be used to connect to Slack API
-      var userId = body["user_id"];
-      var teamId = body["team_id"];
-      console.log('The new bot token is: ' + botAccessToken);
-      Pmbot.saveOAuthToken(botAccessToken, teamId);
-      response.status(200).send('Authorization succeeded!');
-    },
-    function(status){
-      console.log('Error has occurred:' + status.error);
-      response.status(400).send('Authorization failed: '  + status.error);
-    });
-});
-
-// Handler for message button clicks
-app.post('/button', function(request, response) {
-  var payloadStr = request.body.payload;
-  if (payloadStr == null)
-  {
-      console.error("/button: No payload is found in the request body.");
-      res.status(400).send();
-      return;
-  }
-  var payload = JSON.parse(payloadStr),
-      channel = payload.channel.name;
-
-  if (!payload.actions || payload.actions.constructor !== Array || payload.actions.length === 0)
-  {
-      console.error("/button: The payload did not contain any actions.");
-      res.status(400).send();
-      return;
-  }
-  var buttonClicked = payload.actions[0].value,
-      msg = '*You clicked   ' + buttonClicked + '. Thank you!*',
-      msgResponse = {};
-      msgResponse.text = msg;
-      msgResponse.attachments
-
-  response.status(200).send(msgResponse);
-});
-
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
-
-// Facebook Webhook
 app.get('/webhook', function (req, res) {
-    if (req.query['hub.verify_token'] === 'testbot_verify_token') {
-        res.send(req.query['hub.challenge']);
-    } else {
-        res.send('Invalid verify token');
-    }
+  if (req.query['hub.verify_token'] === 'testbot_verify_token') {
+    res.send(req.query['hub.challenge']);
+  } else {
+    res.send('Invalid verify token');
+  }
 });
+
+app.post('/webhook', function (req, res) {
+  var events = req.body.entry[0].messaging;
+  for (i=0; i < events.length; i++) {
+    var event = events[i];
+    if (event.message && event.message.text) {
+      sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
+    }
+    res.sendStatus(200);
+  }
+});
+
+function sendMessage(recipientId, message) {
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+    method: 'POST',
+    json: {
+      recipient: {id: recipientId},
+      message: message,
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+      }
+    });
+};
