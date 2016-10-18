@@ -88,9 +88,10 @@ app.post('/button', function(request, response) {
       return;  
   }
   var buttonClicked = payload.actions[0].value,
-      msg = 'You clicked ' + buttonClicked,
+      msg = '*You clicked ' + buttonClicked + '. Thank you!*',
       msgResponse = {};
       msgResponse.text = msg;
+      msgResponse.attachments 
 
   response.status(200).send(msgResponse);
 });
