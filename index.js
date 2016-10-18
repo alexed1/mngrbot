@@ -32,18 +32,18 @@ var Pmbot = new Pmbot({
 
 Pmbot.run();
 
-// 
+//
 // ExpressJS routes
 //
 app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
-// This route is called by Slack after the OAuth authorization is successfully completed  
+// This route is called by Slack after the OAuth authorization is successfully completed
 // Here we acquire the OAuth token and save it somewhere
 app.get('/authorized', function(request, response) {
   var code = request.query.code; // auth code
-  if (!code) 
+  if (!code)
   {
     response.status(400).send('Authorization failed');
     return;
@@ -52,7 +52,7 @@ app.get('/authorized', function(request, response) {
   params['client_id'] = slackClientId;
   params['client_secret'] = slackClientSecret;
   params['code'] = code;
-  
+
   Pmbot.api('oauth.access', params)
   .then(
     function(body) {
@@ -70,7 +70,7 @@ app.get('/authorized', function(request, response) {
     });
 });
 
-// Handler for message button clicks 
+// Handler for message button clicks
 app.post('/button', function(request, response) {
   var payloadStr = request.body.payload;
   if (payloadStr == null)
@@ -81,22 +81,31 @@ app.post('/button', function(request, response) {
   }
   var payload = JSON.parse(payloadStr),
       channel = payload.channel.name;
-  
+
   if (!payload.actions || payload.actions.constructor !== Array || payload.actions.length === 0)
   {
       console.error("/button: The payload did not contain any actions.");
       res.status(400).send();
-      return;  
+      return;
   }
   var buttonClicked = payload.actions[0].value,
       msg = '*You clicked   ' + buttonClicked + '. Thank you!*',
       msgResponse = {};
       msgResponse.text = msg;
-      msgResponse.attachments 
+      msgResponse.attachments
 
   response.status(200).send(msgResponse);
 });
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
+});
+
+// Facebook Webhook
+app.get('/webhook', function (req, res) {
+    if (req.query['hub.verify_token'] === 'testbot_verify_token') {
+        res.send(req.query['hub.challenge']);
+    } else {
+        res.send('Invalid verify token');
+    }
 });
