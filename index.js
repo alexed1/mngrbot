@@ -101,7 +101,7 @@ function sendMessage(recipientId, message) {
 
     if (values.length === 3 && values[0] === 'kitten') {
       if (Number(values[1]) > 0 && Number(values[2]) > 0) {
-        var imageURL = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
+        var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
 
         message = {
                 "attachment": {
