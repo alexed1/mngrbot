@@ -9,7 +9,8 @@
 'use strict';
 
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    request = require('request');
 
 /*
  * Handles the validation request from Facebook.
