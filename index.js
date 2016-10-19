@@ -69,12 +69,10 @@ app.get('/webhook', function (req, res) {
 
   for (var i = 0; i < events.length; i++) {
     event = events[i];
-    console.log(event);
     if (event.message && event.message.text) {
-      if (!kittenMessage(event.sender.id, event.message.text)) {
+      console.log('Sending response');
         sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
       };
-    };
   };
   res.sendStatus(200);
 });
