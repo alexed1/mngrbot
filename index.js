@@ -95,7 +95,7 @@ function sendMessage(recipientId, message) {
     });
   };
 
-  function kittenMessage(recipient) {
+  function kittenMessage(recipientId, text) {
     text = text || "";
     var values  = text.split(' ');
 
