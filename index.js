@@ -66,11 +66,6 @@ app.get('/webhook', function (req, res) {
   var events = req.body.entry[0].messaging;
   var event = events[0]
   console.log('FB hook is invoked.', event);
-  if (!event.message) 
-  {
-    console.log('No message in the event');
-    return res.status(201).send('Non-message events are ignored.');  
-  }
 
   for (var i = 0; i < events.length; i++) {
     event = events[i];
