@@ -63,15 +63,14 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) {
   var events = req.body.entry[0].messaging;
-  var i = 0;
-  sendMessage(events[0].sender.id, {text: "foo"});
+  sendMessage(events[0].sender.id, {text: "post received"});
 
-  for (i = 0; i < events.length; i++) {
+  for (var i = 0; i < events.length; i++) {
     var event = events[i];
     if (event.message && event.message.text) {
-      //if (!kittenMessage(event.sender.id, event.message.text)) {
+      if (!kittenMessage(event.sender.id, event.message.text)) {
         sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
-    //}
+    };
     res.sendStatus(200);
     };
   };
