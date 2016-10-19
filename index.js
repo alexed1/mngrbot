@@ -39,7 +39,7 @@ var token = process.env.BOT_API_KEY;
 var dbPath = process.env.BOT_DB_PATH;
 var name = process.env.BOT_NAME;
 var initChannel = process.env.INIT_CHANNEL;
-var botPageId = process.env.INIT_CHANNEL || '1783203511961256';
+var botPageId = process.env.BOT_PAGE_ID || '1783203511961256';
 
 var Pmbot = new Pmbot({
   token: token,
