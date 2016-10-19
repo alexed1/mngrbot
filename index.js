@@ -66,14 +66,19 @@ app.get('/webhook', function (req, res) {
   app.post('/webhook', function (req, res) {
   console.log('FB hook is invoked.');
   var events = req.body.entry[0].messaging;
-  if (events[0].sender.id == process.env.BOT_PAGE_ID)
+  var event = events[0]
+  if (!event.message) 
+  {
+    return res.status(201).send('Non-message events are ignored.');  
+  }
+  if (event.sender.id == process.env.BOT_PAGE_ID)
   {
     return res.status(201).send('Messages from the bot are ignored.'); //this is a bot-submitted message
   }
-  sendMessage(events[0].sender.id, {text: "post received"});
+  sendMessage(event.sender.id, {text: "post received"});
 
   for (var i = 0; i < events.length; i++) {
-    var event = events[i];
+    event = events[i];
     console.log(event);
     if (event.message && event.message.text) {
       if (!kittenMessage(event.sender.id, event.message.text)) {
