@@ -50,10 +50,11 @@ var Pmbot = new Pmbot({
 Pmbot.run();
 
 //=========================================================
-//SECTION FB MEssenger integration
+//SECTION FB Messenger integration
 
 
 app.get('/webhook', function (req, res) {
+    console.log('FB hook is invoked.');
   if (req.query['hub.verify_token'] === 'testbot_verify_token') {
     res.send(req.query['hub.challenge']);
   } else {
@@ -61,7 +62,8 @@ app.get('/webhook', function (req, res) {
   }
 });
 
-app.post('/webhook', function (req, res) {
+  app.post('/webhook', function (req, res) {
+  console.log('FB hook is invoked.');
   var events = req.body.entry[0].messaging;
   sendMessage(events[0].sender.id, {text: "post received"});
 
@@ -87,9 +89,9 @@ function sendMessage(recipientId, message) {
       message: message,
     }, function(error, response, body) {
         if (error) {
-            console.log('Error sending message: ', error);
+            console.error('Error sending message: ', error);
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+            console.error('Error: ', response.body.error);
         }
       }
     });
