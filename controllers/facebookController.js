@@ -12,9 +12,7 @@ var express = require('express'),
     router = express.Router(),
     request = require('request');
 
-/*
- * Handles the validation request from Facebook.
- */
+// Handles the validation request from Facebook.
 router.get('/', (req, res) => {
     if (req.query['hub.verify_token'] === 'testbot_verify_token') {
         res.send(req.query['hub.challenge']);
@@ -23,9 +21,7 @@ router.get('/', (req, res) => {
     }
 });
 
-/*
- * Handles messaging-related events from Facebook.
- */
+// Handles messaging-related events from Facebook.
 router.post('/', (req, res) => {
     var events = req.body.entry[0].messaging;
     var event = events[0]

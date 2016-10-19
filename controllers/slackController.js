@@ -11,9 +11,7 @@
 var express = require('express'),
     router = express.Router();
 
-/*
- * Handles clicking on the buttons within a Slack message.
- */
+// Handles clicking on the buttons within a Slack message.
 router.post('/', (req, res) => {
     res.status(200).send('Done');
 });

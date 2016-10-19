@@ -11,6 +11,7 @@
 var express = require('express'),
     router = express.Router();
 
+// Home page
 router.get('/', (req, res) => {
     res.render('pages/index');
 });
