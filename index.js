@@ -68,7 +68,7 @@ app.get('/webhook', function (req, res) {
   var events = req.body.entry[0].messaging;
   if (events[0].sender.id == process.env.BOT_PAGE_ID)
   {
-    return; //this is a bot-submitted message
+    return res.status(201).send('Messages from the bot are ignored.'); //this is a bot-submitted message
   }
   sendMessage(events[0].sender.id, {text: "post received"});
 
