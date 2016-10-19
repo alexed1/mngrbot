@@ -39,6 +39,7 @@ var token = process.env.BOT_API_KEY;
 var dbPath = process.env.BOT_DB_PATH;
 var name = process.env.BOT_NAME;
 var initChannel = process.env.INIT_CHANNEL;
+var botPageId = process.env.INIT_CHANNEL || '1783203511961256';
 
 var Pmbot = new Pmbot({
   token: token,
@@ -65,7 +66,7 @@ app.get('/webhook', function (req, res) {
   app.post('/webhook', function (req, res) {
   console.log('FB hook is invoked.');
   var events = req.body.entry[0].messaging;
-  if (events[0].sender.id === events[0].recipient.id)
+  if (events[0].sender.id == process.env.BOT_PAGE_ID)
   {
     return; //this is a bot-submitted message
   }
