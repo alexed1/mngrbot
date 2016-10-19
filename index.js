@@ -71,7 +71,8 @@ app.post('/webhook', function (req, res) {
         sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
     }
     res.sendStatus(200);
-  }
+    };
+  };
 });
 
 function sendMessage(recipientId, message) {
