@@ -96,7 +96,7 @@ function sendMessage(recipientId, message) {
   };
 
   function kittenMessage(recipient) {
-    var text = text || "";
+    text = text || "";
     var values  = text.split(' ');
 
     if (values.length === 3 && values[0] === 'kitten') {
