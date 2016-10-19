@@ -65,14 +65,18 @@ app.get('/webhook', function (req, res) {
   app.post('/webhook', function (req, res) {
   console.log('FB hook is invoked.');
   var events = req.body.entry[0].messaging;
-  //sendMessage(events[0].sender.id, {text: "post received"});
+  if (events[0].sender.id === events[0].recipient.id)
+  {
+    return; //this is a bot-submitted message
+  }
+  sendMessage(events[0].sender.id, {text: "post received"});
 
   for (var i = 0; i < events.length; i++) {
     var event = events[i];
     console.log(event);
     if (event.message && event.message.text) {
       if (!kittenMessage(event.sender.id, event.message.text)) {
-        //sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
+        sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
       };
 
     };
