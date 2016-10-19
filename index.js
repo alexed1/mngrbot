@@ -10,7 +10,6 @@
 var bodyParser = require("body-parser"),
     express = require('express'),
     request = require('request'),
-    router = express.Router(),
     app = express();
 
 //==================================================
@@ -29,13 +28,13 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 // Reference the Facebook controller 
-router.use('/webhook', require('./controllers/facebookController'));
+app.use('/webhook', require('./controllers/facebookController'));
 
 // Reference the Slack controller
-router.use('/button', require('./controllers/slackController'));
+app.use('/button', require('./controllers/slackController'));
 
 // Referenc the content file controller
-router.use('/', require('./controllers/contentController'));
+app.use('/', require('./controllers/contentController'));
 
 app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
