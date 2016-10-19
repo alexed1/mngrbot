@@ -39,7 +39,6 @@ var token = process.env.BOT_API_KEY;
 var dbPath = process.env.BOT_DB_PATH;
 var name = process.env.BOT_NAME;
 var initChannel = process.env.INIT_CHANNEL;
-var botPageId = process.env.BOT_PAGE_ID || '1783203511961256';
 
 var Pmbot = new Pmbot({
   token: token,
@@ -72,11 +71,6 @@ app.get('/webhook', function (req, res) {
     console.log('No message in the event');
     return res.status(201).send('Non-message events are ignored.');  
   }
-  if (event.sender.id == process.env.BOT_PAGE_ID)
-  {
-    console.log('Message from the bot'); 
-    return res.status(201).send('Messages from the bot are ignored.'); //this is a bot-submitted message
-  }
 
   for (var i = 0; i < events.length; i++) {
     event = events[i];
@@ -85,7 +79,6 @@ app.get('/webhook', function (req, res) {
       if (!kittenMessage(event.sender.id, event.message.text)) {
         sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
       };
-
     };
   };
   res.sendStatus(200);
