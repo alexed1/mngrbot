@@ -14,9 +14,9 @@ var express = require('express'),
 // Handles clicking on the buttons within a Slack message.
 router.post('/', (req, res) => {
     console.log(req.body.payload);
-    console.log(req.body.payload.actions);
+    console.log(req.body.payload[0].actions);
 
-    res.status(200).send(req.body.payload.actions[0].value);
+    res.status(200).send(req.body.payload[0].actions[0].value);
 });
 
 module.exports = router;
