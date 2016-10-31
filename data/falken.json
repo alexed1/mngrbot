@@ -9,13 +9,13 @@
             "name": "boostmorale",
             "text": "Boost Morale",
             "type": "button",
-            "value": "boost_morale"
+            "value": "Boost Morale"
         },
         {
             "name": "maze",
             "text": "Falken's Maze",
             "type": "button",
-            "value": "Maze"
+            "value": "Falken's Maze"
         },
         {
             "name": "war",
