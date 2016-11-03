@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-// views is directory for all template files
+// views is the directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
@@ -32,7 +32,7 @@ app.use('/webhook', require('./controllers/facebookController'));
 // Reference the Slack controller
 app.use('/button', require('./controllers/slackController'));
 
-// Referenc the content file controller
+// Reference the content file controller
 app.use('/', require('./controllers/contentController'));
 
 app.listen(app.get('port'), function () {
