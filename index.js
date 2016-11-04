@@ -53,6 +53,9 @@ app.use('/webhook', require('./controllers/facebookController'));
 // Reference the Slack controller
 app.use('/button', require('./controllers/slackController'));
 
+// Reference the OAuth controller
+app.use('/authorized', require('./controllers/oauthController'));
+
 // Reference the content file controller
 app.use('/', require('./controllers/contentController'));
 
@@ -60,4 +63,4 @@ app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
 });
 
-pmBot.run()
+pmBot.run();

@@ -16,7 +16,7 @@
             ],
             "env": {
                 "NODE_ENV": "development",
-                "BOT_API_KEY": "xoxp-59587186997-63862662741-91975270868-f6facac32d8ace07b14c1c00708769f7"
+                "BOT_API_KEY": "xoxb-92058630181-zSomHhhft7o5QNcSi5ukVB2i"
             },
             "console": "internalConsole",
             "sourceMaps": false,
