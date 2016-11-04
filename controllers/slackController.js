@@ -13,9 +13,10 @@ var express = require('express'),
 
 // Handles clicking on the buttons within a Slack message.
 router.post('/', (req, res) => {
-    var value = JSON.parse(req.body.payload).actions[0].value;
-    res.status(200).send("Preparing to provide managerial insight...");
-
+    let pmBot = req.app.get('pmBot')
+    var payload = JSON.parse(req.body.payload);
+    pmBot.emit('buttonClicked', payload);
+    res.status(200).send("   ");
 });
 
 module.exports = router;
